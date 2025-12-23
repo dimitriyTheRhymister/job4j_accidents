@@ -7,5 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class AccidentApplication {
     public static void main(String[] args) {
         SpringApplication.run(AccidentApplication.class, args);
+        System.out.println("Приложение запущено на порту 8080!");
+        System.out.println("Откройте: http://localhost:8080");
     }
 }
