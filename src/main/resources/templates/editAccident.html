@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ru">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+          integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+            integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+            integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+            integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+    <title>Редактирование инцидента</title>
+</head>
+<body>
+<div class="container">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+            <div class="navbar-nav">
+                <a class="nav-item nav-link" th:href="@{/}">Главная</a>
+                <a class="nav-item nav-link" th:href="@{/}">Инциденты</a>
+                <a class="nav-item nav-link active" href="#">Редактирование инцидента</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="row pt-3">
+        <div class="card" style="width: 100%">
+            <div class="card-header">
+                <h4>Редактирование инцидента #<span th:text="${accident.id}"></span></h4>
+            </div>
+            <div class="card-body">
+                <form th:action="@{/updateAccident}" th:method="POST" th:object="${accident}">
+                    <input type="hidden" th:field="*{id}"/>
+
+                    <div class="form-group">
+                        <label for="name">Название инцидента</label>
+                        <input type="text" class="form-control" id="name"
+                               th:field="*{name}" required>
+                        <small class="form-text text-muted">Краткое описание инцидента</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="text">Подробное описание</label>
+                        <textarea class="form-control" id="text"
+                                  th:field="*{text}" rows="3" required></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="address">Адрес происшествия</label>
+                        <input type="text" class="form-control" id="address"
+                               th:field="*{address}" required>
+                    </div>
+
+                    <div class="form-group mt-4">
+                        <button type="submit" class="btn btn-success btn-lg mr-2">
+                            <i class="fas fa-check"></i> Обновить
+                        </button>
+                        <a th:href="@{/}" class="btn btn-secondary btn-lg mr-2">
+                            <i class="fas fa-times"></i> Отмена
+                        </a>
+                        <a th:href="@{/deleteAccident(id=${accident.id})}"
+                           class="btn btn-danger btn-lg"
+                           onclick="return confirm('Вы уверены, что хотите удалить этот инцидент?')">
+                            <i class="fas fa-trash"></i> Удалить
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Добавляем Font Awesome для иконок -->
+<script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+</body>
+</html>

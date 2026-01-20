@@ -5,6 +5,7 @@ import ru.job4j.accidents.model.Accident;
 
 import java.util.Collection;
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -14,7 +15,6 @@ public class AccidentMem {
     private final AtomicInteger nextId = new AtomicInteger(1);
 
     public AccidentMem() {
-        // Добавляем тестовые данные при создании хранилища
         save(new Accident(0, "Нарушение ПДД",
                 "Превышение скорости на 20 км/ч", "ул. Ленина, д. 10"));
         save(new Accident(0, "ДТП",
@@ -33,5 +33,13 @@ public class AccidentMem {
 
     public Collection<Accident> findAll() {
         return accidents.values();
+    }
+
+    public Optional<Accident> findById(int id) {
+        return Optional.ofNullable(accidents.get(id));
+    }
+
+    public boolean deleteById(int id) {
+        return accidents.remove(id) != null;
     }
 }
