@@ -12,7 +12,7 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container-fluid">
         <a class="navbar-brand" href="#">
-            <i class="bi bi-car-front-fill"></i> Автоинциденты
+            <i class="fas fa-car-crash"></i> Автоинциденты
         </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
             <span class="navbar-toggler-icon"></span>
@@ -40,7 +40,9 @@
                 <span th:text="${user}" class="fw-bold"></span>
             </div>
             <form class="d-flex">
-                <input class="form-control me-2" type="search" placeholder="Поиск...">
+                <label>
+                    <input class="form-control me-2" type="search" placeholder="Поиск...">
+                </label>
                 <button class="btn btn-outline-light" type="submit">
                     <i class="bi bi-search"></i>
                 </button>

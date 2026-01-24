@@ -27,11 +27,11 @@ public class AccidentController {
 
     @GetMapping("/editAccident")
     public String viewEditAccident(@RequestParam("id") int id, Model model) {
-        Optional<Accident> accident = accidentService.findById(id);
-        if (accident.isEmpty()) {
+        Optional<Accident> accidentOptional = accidentService.findById(id);
+        if (accidentOptional.isEmpty()) {
             return "redirect:/";
         }
-        model.addAttribute("accident", accident);
+        model.addAttribute("accident", accidentOptional.get()); // передаём сам объект, не Optional
         return "editAccident";
     }
 
