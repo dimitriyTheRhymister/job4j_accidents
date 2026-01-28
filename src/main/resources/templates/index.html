@@ -19,20 +19,20 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav me-auto">
-                <li class="nav-item">
-                    <a class="nav-link active" th:href="@{/}">
-                        <i class="bi bi-house-door"></i> Главная
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" th:href="@{/createAccident}">
-                        <i class="bi bi-plus-circle"></i> Добавить инцидент
-                    </a>
-                </li>
+<!--                <li class="nav-item">-->
+<!--                    <a class="nav-link active" th:href="@{/}">-->
+<!--                        <i class="bi bi-house-door"></i> Главная-->
+<!--                    </a>-->
+<!--                </li>-->
+<!--                <li class="nav-item">-->
+<!--                    <a class="nav-link" th:href="@{/createAccident}">-->
+<!--                        <i class="bi bi-plus-circle"></i> Добавить инцидент-->
+<!--                    </a>-->
+<!--                </li>-->
             </ul>
             <div class="navbar-text me-3">
                 <i class="bi bi-person-circle"></i>
-                <span th:text="${user}" class="fw-bold"></span> <!-- динамически из модели -->
+                <span th:text="${user}" class="fw-bold"></span>
             </div>
             <form class="d-flex">
                 <input class="form-control me-2" type="search" placeholder="Поиск...">
@@ -49,7 +49,6 @@
         <div class="col">
             <div class="d-flex justify-content-between align-items-center mb-3">
                 <h2>Список инцидентов</h2>
-                <!-- ДОБАВИЛ ЗЕЛЁНУЮ КНОПКУ ОБРАТНО (она была в оригинале) -->
                 <a th:href="@{/createAccident}" class="btn btn-success">
                     <i class="fas fa-plus"></i> Создать новый инцидент
                 </a>
@@ -63,6 +62,7 @@
                                 <th scope="col">#</th>
                                 <th scope="col">Название</th>
                                 <th scope="col">Тип</th>
+                                <th scope="col">Статьи</th>
                                 <th scope="col">Описание</th>
                                 <th scope="col">Адрес</th>
                                 <th scope="col" class="text-center">Действия</th>
@@ -76,17 +76,33 @@
                                     <span th:if="${accident.type != null}"
                                           th:text="${accident.type.name}"
                                           class="badge bg-info">Тип</span>
-                                    <span th:unless="${accident.type != null}"
-                                          class="badge bg-secondary">Не указан</span>
+                                </td>
+                                <td>
+                                    <div th:if="${accident.rules != null and !accident.rules.isEmpty()}">
+                                        <span th:each="rule, iter : ${accident.rules}"
+                                              class="badge bg-secondary me-1">
+                                            <span th:text="${rule.name}"></span>
+                                        </span>
+                                    </div>
+                                    <span th:if="${accident.rules == null or accident.rules.isEmpty()}"
+                                          class="text-muted">Нет статей</span>
                                 </td>
                                 <td th:text="${accident.text}">Превышение скорости на 20 км/ч</td>
                                 <td th:text="${accident.address}">ул. Ленина, д. 10</td>
                                 <td class="text-center">
                                     <div class="btn-group btn-group-sm" role="group">
+                                        <!-- Кнопка просмотра (если нужна) -->
+                                        <!--
+                                        <button class="btn btn-sm btn-outline-primary me-1">
+                                            <i class="bi bi-eye"></i>
+                                        </button>
+                                        -->
+                                        <!-- Кнопка редактирования -->
                                         <a th:href="@{/editAccident(id=${accident.id})}"
                                            class="btn btn-sm btn-outline-warning me-1">
                                             <i class="bi bi-pencil"></i>
                                         </a>
+                                        <!-- Кнопка удаления -->
                                         <a th:href="@{/deleteAccident(id=${accident.id})}"
                                            class="btn btn-sm btn-outline-danger"
                                            onclick="return confirm('Удалить инцидент?')">
@@ -115,7 +131,7 @@
 <!-- Подвал с копирайтом -->
 <footer class="mt-4 py-3 bg-light border-top">
     <div class="container-fluid text-center">
-        <small class="text-muted">Система учета автомобильных инцидентов © 2023</small>
+        <small class="text-muted">Система учета автомобильных инцидентов © 2026</small>
     </div>
 </footer>
 
