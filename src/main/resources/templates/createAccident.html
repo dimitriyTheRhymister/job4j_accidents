@@ -2,72 +2,93 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="ru">
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
-          integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
-            integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
-            integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
-            integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <title>Создание инцидента</title>
 </head>
 <body>
-<div class="container">
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-            <div class="navbar-nav">
-                <a class="nav-item nav-link" th:href="@{/}">Главная</a>
-                <a class="nav-item nav-link" th:href="@{/}">Инциденты</a>
-                <a class="nav-item nav-link active" href="#">Добавить инцидент</a>
-            </div>
-        </div>
-    </nav>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container-fluid">
+        <a class="navbar-brand" th:href="@{/}">
+            <i class="fas fa-car-crash"></i> Автоинциденты
+        </a>
+    </div>
+</nav>
 
-    <div class="row pt-3">
-        <div class="card" style="width: 100%">
-            <div class="card-header">
-                <h4>Создание нового инцидента</h4>
-            </div>
-            <div class="card-body">
-                <form th:action="@{/saveAccident}" th:method="POST" th:object="${accident}">
-                    <input type="hidden" name="id" value="0"/>
+<main class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="mb-0">
+                        <i class="fas fa-plus-circle"></i> Создание нового инцидента
+                    </h4>
+                </div>
+                <div class="card-body">
+                    <form th:action="@{/saveAccident}" method="post" th:object="${accident}">
+                        <input type="hidden" name="id" value="0"/>
 
-                    <div class="form-group">
-                        <label for="name">Название инцидента</label>
-                        <input type="text" class="form-control" id="name"
-                               name="name" required placeholder="Введите название">
-                        <small class="form-text text-muted">Краткое описание инцидента</small>
-                    </div>
+                        <div class="mb-3">
+                            <label for="name" class="form-label">
+                                <i class="fas fa-heading"></i> Название инцидента
+                            </label>
+                            <input type="text" class="form-control" id="name"
+                                   name="name" required placeholder="Введите название">
+                            <small class="form-text text-muted">Краткое описание инцидента</small>
+                        </div>
 
-                    <div class="form-group">
-                        <label for="text">Подробное описание</label>
-                        <textarea class="form-control" id="text" name="text"
-                                  rows="3" required placeholder="Опишите детали инцидента"></textarea>
-                    </div>
+                        <div class="mb-3">
+                            <label for="text" class="form-label">
+                                <i class="fas fa-align-left"></i> Подробное описание
+                            </label>
+                            <textarea class="form-control" id="text" name="text"
+                                      rows="3" required placeholder="Опишите детали инцидента"></textarea>
+                        </div>
 
-                    <div class="form-group">
-                        <label for="address">Адрес происшествия</label>
-                        <input type="text" class="form-control" id="address"
-                               name="address" required placeholder="Укажите адрес">
-                    </div>
+                        <div class="mb-3">
+                            <label for="address" class="form-label">
+                                <i class="fas fa-map-marker-alt"></i> Адрес происшествия
+                            </label>
+                            <input type="text" class="form-control" id="address"
+                                   name="address" required placeholder="Укажите адрес">
+                        </div>
 
-                    <div class="form-group mt-4">
-                        <button type="submit" class="btn btn-primary btn-lg mr-2">
-                            <i class="fas fa-save"></i> Сохранить
-                        </button>
-                        <a th:href="@{/}" class="btn btn-secondary btn-lg">
-                            <i class="fas fa-times"></i> Отмена
-                        </a>
-                    </div>
-                </form>
+                        <!-- Добавляем поле для выбора типа -->
+                        <div class="mb-3">
+                            <label for="typeId" class="form-label">
+                                <i class="fas fa-car"></i> Тип инцидента
+                            </label>
+                            <select class="form-control" id="typeId" name="type.id" required>
+                                <option value="" disabled selected>Выберите тип...</option>
+                                <option th:each="type: ${types}"
+                                        th:value="${type.id}"
+                                        th:text="${type.name}">
+                                </option>
+                            </select>
+                        </div>
+
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
+                            <a th:href="@{/}" class="btn btn-secondary me-md-2">
+                                <i class="fas fa-times"></i> Отмена
+                            </a>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-save"></i> Сохранить
+                            </button>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
-</div>
+</main>
 
-<!-- Добавляем Font Awesome для иконок -->
-<script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+<footer class="mt-4 py-3 bg-light border-top">
+    <div class="container text-center">
+        <small class="text-muted">Система учета автомобильных инцидентов © 2023</small>
+    </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

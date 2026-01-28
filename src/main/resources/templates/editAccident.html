@@ -59,6 +59,20 @@
                                    placeholder="ул. Ленина, д. 10" required>
                         </div>
 
+                        <!-- Добавляем поле для выбора типа при редактировании -->
+                        <div class="mb-3">
+                            <label for="typeId" class="form-label">
+                                <i class="fas fa-car"></i> Тип инцидента
+                            </label>
+                            <select class="form-control" id="typeId" name="type.id" required>
+                                <option th:each="type: ${types}"
+                                        th:value="${type.id}"
+                                        th:text="${type.name}"
+                                        th:selected="${accident.type != null && type.id == accident.type.id}">
+                                </option>
+                            </select>
+                        </div>
+
                         <div class="d-grid gap-2 d-md-flex justify-content-md-end">
                             <a th:href="@{/}" class="btn btn-secondary me-md-2">
                                 <i class="fas fa-times"></i> Отмена
