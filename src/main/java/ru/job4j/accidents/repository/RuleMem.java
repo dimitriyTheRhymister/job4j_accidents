@@ -6,6 +6,7 @@ import ru.job4j.accidents.model.Rule;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
 
 @Repository
 public class RuleMem {
@@ -37,11 +38,11 @@ public class RuleMem {
         return Optional.ofNullable(rules.get(id));
     }
 
+    // Или более эффективно с Stream API:
     public Set<Rule> findByIds(Set<Integer> ids) {
-        Set<Rule> result = new HashSet<>();
-        for (Integer id : ids) {
-            findById(id).ifPresent(result::add);
-        }
-        return result;
+        return ids.stream()
+                .map(rules::get) // O(1) операция для HashMap
+                .filter(Objects::nonNull)
+                .collect(Collectors.toSet());
     }
 }
