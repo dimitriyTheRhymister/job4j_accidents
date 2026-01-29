@@ -5,25 +5,22 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import ru.job4j.accidents.model.Accident;
-import ru.job4j.accidents.model.AccidentType;
-import ru.job4j.accidents.model.Rule;
-import ru.job4j.accidents.service.AccidentService;
+import ru.job4j.accidents.service.*;
 
-import jakarta.servlet.http.HttpServletRequest; // <-- для Spring Boot 3.x
+import jakarta.servlet.http.HttpServletRequest;
 import java.util.*;
 
 @Controller
 @AllArgsConstructor
 public class AccidentController {
     private final AccidentService accidentService;
+    private final AccidentTypeService accidentTypeService; // <-- новый сервис
+    private final RuleService ruleService; // <-- новый сервис
 
     @GetMapping("/createAccident")
     public String viewCreateAccident(Model model) {
-        List<AccidentType> types = accidentService.findAllTypes();
-        List<Rule> rules = accidentService.findAllRules();
-
-        model.addAttribute("types", types);
-        model.addAttribute("rules", rules);
+        model.addAttribute("types", accidentTypeService.findAll());
+        model.addAttribute("rules", ruleService.findAll());
         model.addAttribute("accident", new Accident());
         return "createAccident";
     }
@@ -32,18 +29,17 @@ public class AccidentController {
     public String save(@ModelAttribute Accident accident,
                        @RequestParam("type.id") int typeId,
                        HttpServletRequest req) {
-        // Устанавливаем тип
-        accidentService.findTypeById(typeId).ifPresent(accident::setType);
+        // Устанавливаем тип через новый сервис
+        accidentTypeService.findById(typeId).ifPresent(accident::setType);
 
-        // Получаем выбранные статьи нарушений
+        // Получаем выбранные статьи через новый сервис
         String[] ruleIds = req.getParameterValues("rIds");
         if (ruleIds != null) {
-            Set<Rule> rules = new HashSet<>();
+            Set<Integer> ids = new HashSet<>();
             for (String id : ruleIds) {
-                accidentService.findRuleById(Integer.parseInt(id))
-                        .ifPresent(rules::add);
+                ids.add(Integer.parseInt(id));
             }
-            accident.setRules(rules);
+            accident.setRules(ruleService.findByIds(ids));
         }
 
         accidentService.save(accident);
@@ -57,11 +53,8 @@ public class AccidentController {
             return "redirect:/";
         }
 
-        List<AccidentType> types = accidentService.findAllTypes();
-        List<Rule> rules = accidentService.findAllRules();
-
-        model.addAttribute("types", types);
-        model.addAttribute("rules", rules);
+        model.addAttribute("types", accidentTypeService.findAll());
+        model.addAttribute("rules", ruleService.findAll());
         model.addAttribute("accident", accidentOptional.get());
         return "editAccident";
     }
@@ -70,18 +63,17 @@ public class AccidentController {
     public String update(@ModelAttribute Accident accident,
                          @RequestParam("type.id") int typeId,
                          HttpServletRequest req) {
-        // Устанавливаем тип
-        accidentService.findTypeById(typeId).ifPresent(accident::setType);
+        // Устанавливаем тип через новый сервис
+        accidentTypeService.findById(typeId).ifPresent(accident::setType);
 
-        // Получаем выбранные статьи нарушений
+        // Получаем выбранные статьи через новый сервис
         String[] ruleIds = req.getParameterValues("rIds");
         if (ruleIds != null) {
-            Set<Rule> rules = new HashSet<>();
+            Set<Integer> ids = new HashSet<>();
             for (String id : ruleIds) {
-                accidentService.findRuleById(Integer.parseInt(id))
-                        .ifPresent(rules::add);
+                ids.add(Integer.parseInt(id));
             }
-            accident.setRules(rules);
+            accident.setRules(ruleService.findByIds(ids));
         }
 
         accidentService.update(accident);
