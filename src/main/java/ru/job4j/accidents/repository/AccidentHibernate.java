@@ -5,12 +5,9 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.stereotype.Repository;
 import ru.job4j.accidents.model.Accident;
-import ru.job4j.accidents.model.AccidentType;
-import ru.job4j.accidents.model.Rule;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 @Repository
 @AllArgsConstructor
@@ -34,10 +31,10 @@ public class AccidentHibernate {
     public List<Accident> findAll() {
         try (Session session = sf.openSession()) {
             return session
-                    .createQuery("SELECT DISTINCT a FROM Accident a " +
-                            "LEFT JOIN FETCH a.type " +
-                            "LEFT JOIN FETCH a.rules " +
-                            "ORDER BY a.id", Accident.class)
+                    .createQuery("SELECT DISTINCT a FROM Accident a "
+                            + "LEFT JOIN FETCH a.type "
+                            + "LEFT JOIN FETCH a.rules "
+                            + "ORDER BY a.id", Accident.class)
                     .list();
         }
     }
@@ -45,10 +42,10 @@ public class AccidentHibernate {
     public Optional<Accident> findById(int id) {
         try (Session session = sf.openSession()) {
             Accident accident = session.createQuery(
-                            "SELECT DISTINCT a FROM Accident a " +
-                                    "LEFT JOIN FETCH a.type " +
-                                    "LEFT JOIN FETCH a.rules " +
-                                    "WHERE a.id = :id", Accident.class)
+                            "SELECT DISTINCT a FROM Accident a "
+                                    + "LEFT JOIN FETCH a.type "
+                                    + "LEFT JOIN FETCH a.rules "
+                                    + "WHERE a.id = :id", Accident.class)
                     .setParameter("id", id)
                     .uniqueResult();
             return Optional.ofNullable(accident);
