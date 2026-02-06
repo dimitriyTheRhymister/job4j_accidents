@@ -15,13 +15,13 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 public class AccidentController {
     private final AccidentService accidentService;
-    private final AccidentTypeService accidentTypeService; // <-- уже есть
-    private final RuleService ruleService; // <-- уже есть
+    private final AccidentTypeService accidentTypeService; // <-- Используем!
+    private final RuleService ruleService; // <-- Используем!
 
     @GetMapping("/createAccident")
     public String viewCreateAccident(Model model) {
-        model.addAttribute("types", accidentTypeService.findAll());  // <-- через сервис
-        model.addAttribute("rules", ruleService.findAll());          // <-- через сервис
+        model.addAttribute("types", accidentTypeService.findAll()); // <-- Через сервис
+        model.addAttribute("rules", ruleService.findAll()); // <-- Через сервис
         model.addAttribute("accident", new Accident());
         return "createAccident";
     }
@@ -30,15 +30,16 @@ public class AccidentController {
     public String save(@ModelAttribute Accident accident,
                        @RequestParam("type.id") int typeId,
                        HttpServletRequest req) {
-        // Используем сервисы
+        // Используем AccidentTypeService
         accidentTypeService.findById(typeId).ifPresent(accident::setType);
 
+        // Используем RuleService
         String[] ruleIds = req.getParameterValues("rIds");
         if (ruleIds != null) {
             Set<Integer> ids = Arrays.stream(ruleIds)
                     .map(Integer::parseInt)
                     .collect(Collectors.toSet());
-            accident.setRules(ruleService.findByIds(ids));  // <-- через сервис
+            accident.setRules(ruleService.findByIds(ids)); // <-- Через сервис
         }
 
         accidentService.save(accident);
@@ -52,8 +53,8 @@ public class AccidentController {
             return "redirect:/";
         }
 
-        model.addAttribute("types", accidentTypeService.findAll());  // <-- через сервис
-        model.addAttribute("rules", ruleService.findAll());          // <-- через сервис
+        model.addAttribute("types", accidentTypeService.findAll());
+        model.addAttribute("rules", ruleService.findAll());
         model.addAttribute("accident", accidentOptional.get());
         return "editAccident";
     }
@@ -62,8 +63,10 @@ public class AccidentController {
     public String update(@ModelAttribute Accident accident,
                          @RequestParam("type.id") int typeId,
                          HttpServletRequest req) {
+        // Устанавливаем тип через сервис
         accidentTypeService.findById(typeId).ifPresent(accident::setType);
 
+        // Получаем выбранные статьи через сервис
         String[] ruleIds = req.getParameterValues("rIds");
         if (ruleIds != null) {
             Set<Integer> ids = Arrays.stream(ruleIds)
@@ -72,7 +75,7 @@ public class AccidentController {
             accident.setRules(ruleService.findByIds(ids));
         }
 
-        accidentService.update(accident);
+        accidentService.save(accident); // Используем save для обновления
         return "redirect:/";
     }
 

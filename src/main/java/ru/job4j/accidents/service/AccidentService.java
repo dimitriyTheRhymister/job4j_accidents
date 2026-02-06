@@ -3,43 +3,36 @@ package ru.job4j.accidents.service;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.job4j.accidents.model.Accident;
-import ru.job4j.accidents.model.AccidentType;
-import ru.job4j.accidents.model.Rule;
-import ru.job4j.accidents.repository.AccidentHibernate;
+import ru.job4j.accidents.repository.AccidentRepository; // <-- Оставляем
 
-import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 @Service
 @AllArgsConstructor
 public class AccidentService {
-    private final AccidentHibernate accidentRepository;
-    private final AccidentTypeService accidentTypeService;  // <-- Используем сервисы!
-    private final RuleService ruleService;                  // <-- Используем сервисы!
+    private final AccidentRepository accidentRepository;
+    // УДАЛИ ЭТО - дублирование с AccidentTypeService и RuleService:
+    // private final AccidentTypeRepository typeRepository;
+    // private final RuleRepository ruleRepository;
 
-    // ТОЛЬКО методы для Accident
     public Accident save(Accident accident) {
         return accidentRepository.save(accident);
     }
 
-    public Collection<Accident> findAll() {
-        return accidentRepository.findAll();
+    public List<Accident> findAll() {
+        return (List<Accident>) accidentRepository.findAll();
     }
 
     public Optional<Accident> findById(int id) {
         return accidentRepository.findById(id);
     }
 
-    public boolean deleteById(int id) {
-        return accidentRepository.deleteById(id);
+    public void deleteById(int id) {
+        accidentRepository.deleteById(id);
     }
 
-    public boolean update(Accident accident) {
-        return accidentRepository.update(accident);
-    }
-
-    // УДАЛИ все методы для Type и Rule!
-    // Вместо них используй accidentTypeService и ruleService
+    // УДАЛИ эти методы - они уже есть в AccidentTypeService и RuleService:
+    // public List<AccidentType> findAllTypes() { ... }
+    // public Set<Rule> findRulesByIds(Set<Integer> ids) { ... }
 }
