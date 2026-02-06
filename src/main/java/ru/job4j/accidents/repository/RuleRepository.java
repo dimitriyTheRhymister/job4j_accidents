@@ -1,10 +1,10 @@
 package ru.job4j.accidents.repository;
 
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.ListCrudRepository;
 import ru.job4j.accidents.model.Rule;
 
 import java.util.Set;
 
-public interface RuleRepository extends CrudRepository<Rule, Integer> {
-    Set<Rule> findByIdIn(Set<Integer> ids); // Автоматически сгенерирует IN запрос
+public interface RuleRepository extends ListCrudRepository<Rule, Integer> {
+    Set<Rule> findByIdIn(Set<Integer> ids);
 }

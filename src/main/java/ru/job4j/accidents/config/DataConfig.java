@@ -14,7 +14,7 @@ import jakarta.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
 
 @Configuration
-@EnableJpaRepositories("ru.job4j.accidents.repository") // <-- Где искать репозитории
+@EnableJpaRepositories("ru.job4j.accidents.repository")
 @EnableTransactionManagement
 public class DataConfig {
 
@@ -22,10 +22,10 @@ public class DataConfig {
     @Bean
     public LocalContainerEntityManagerFactoryBean entityManagerFactory(DataSource ds) {
         HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
-        vendorAdapter.setGenerateDdl(true); // Автосоздание таблиц
+        vendorAdapter.setGenerateDdl(true);
         LocalContainerEntityManagerFactoryBean factory = new LocalContainerEntityManagerFactoryBean();
         factory.setJpaVendorAdapter(vendorAdapter);
-        factory.setPackagesToScan("ru.job4j.accidents"); // <-- Где искать сущности
+        factory.setPackagesToScan("ru.job4j.accidents");
         factory.setDataSource(ds);
         return factory;
     }

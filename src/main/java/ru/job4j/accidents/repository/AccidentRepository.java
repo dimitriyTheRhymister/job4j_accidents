@@ -1,13 +1,11 @@
 package ru.job4j.accidents.repository;
 
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.ListCrudRepository;
 import ru.job4j.accidents.model.Accident;
 
 import java.util.List;
 
-public interface AccidentRepository extends CrudRepository<Accident, Integer> {
-    // Базовые методы уже есть: save(), findById(), findAll(), deleteById()
+public interface AccidentRepository extends ListCrudRepository<Accident, Integer> {
 
-    // Можно добавить свои методы:
-    List<Accident> findByNameContaining(String name); // Автоматически сгенерирует запрос!
+    List<Accident> findByNameContaining(String name);
 }
