@@ -10,8 +10,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
+import org.springframework.security.provisioning.JdbcUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
+import javax.sql.DataSource;
 
 @Configuration
 @EnableWebSecurity
@@ -23,20 +24,31 @@ public class SecurityConfig {
     }
 
     @Bean
-    public UserDetailsService userDetailsService() {
-        UserDetails user = User.builder()
-                .username("user")
-                .password(passwordEncoder().encode("123456"))
-                .roles("USER")
-                .build();
+    public UserDetailsService userDetailsService(DataSource dataSource, PasswordEncoder passwordEncoder) {
+        // Используем менеджер пользователей через JDBC
+        JdbcUserDetailsManager manager = new JdbcUserDetailsManager(dataSource);
 
-        UserDetails admin = User.builder()
-                .username("admin")
-                .password(passwordEncoder().encode("123456"))
-                .roles("USER", "ADMIN")
-                .build();
+        // Создаем пользователя по умолчанию, если его нет в БД
+        if (!manager.userExists("user")) {
+            UserDetails user = User.builder()
+                    .username("user")
+                    .password(passwordEncoder.encode("123456"))
+                    .roles("USER")
+                    .build();
+            manager.createUser(user);
+        }
 
-        return new InMemoryUserDetailsManager(user, admin);
+        // Создаем админа по умолчанию, если нет
+        if (!manager.userExists("admin")) {
+            UserDetails admin = User.builder()
+                    .username("admin")
+                    .password(passwordEncoder.encode("123456"))
+                    .roles("USER", "ADMIN")
+                    .build();
+            manager.createUser(admin);
+        }
+
+        return manager;
     }
 
     @Bean
@@ -59,7 +71,6 @@ public class SecurityConfig {
                         .permitAll()
                 )
                 .csrf(AbstractHttpConfigurer::disable);
-
         return http.build();
     }
 }
