@@ -38,9 +38,9 @@ public class SecurityConfig {
 
         // Кастомный запрос для получения ролей пользователя
         manager.setAuthoritiesByUsernameQuery(
-                "select u.username, a.authority " +
-                        "from users u, authorities a " +
-                        "where u.username = ? and u.authority_id = a.id"
+                "select u.username, a.authority "
+                        + "from users u, authorities a "
+                        + "where u.username = ? and u.authority_id = a.id"
         );
 
         return manager;
