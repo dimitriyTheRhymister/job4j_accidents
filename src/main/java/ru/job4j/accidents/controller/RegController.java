@@ -13,7 +13,7 @@ import ru.job4j.accidents.repository.UserRepository;
 
 @Controller
 @AllArgsConstructor
-public class RegControl {
+public class RegController {
 
     private final PasswordEncoder encoder;
     private final UserRepository users;
