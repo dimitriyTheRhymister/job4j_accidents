@@ -19,7 +19,7 @@ public class PostController {
         this.posts = posts;
     }
 
-    @RequestMapping(value="/post/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "/post/{id}", method = RequestMethod.GET)
     public String get(@PathVariable int id, Model model) {
         Optional<Post> postOptional = posts.findById(id);
         if (postOptional.isEmpty()) {
@@ -29,7 +29,7 @@ public class PostController {
         return "post";
     }
 
-    @RequestMapping(value="/post/create", method = RequestMethod.POST)
+    @RequestMapping(value = "/post/create", method = RequestMethod.POST)
     public String create(@ModelAttribute Post post) {
         Post savedPost = posts.create(post);  // ← СОХРАНЯЕМ возвращенный объект!
         return "redirect:/post/" + savedPost.getId();  // ← Используем savedPost.getId()
