@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+    <include file="db/001_ddl_create_authorities.sql" relativeToChangelogFile="true"/>
+    <include file="db/002_ddl_create_users.sql" relativeToChangelogFile="true"/>
+    <include file="db/003_ddl_create_accident_types.sql" relativeToChangelogFile="true"/>
+    <include file="db/004_ddl_create_rules.sql" relativeToChangelogFile="true"/>
+    <include file="db/005_ddl_create_accidents.sql" relativeToChangelogFile="true"/>
+    <include file="db/006_ddl_create_accident_rules.sql" relativeToChangelogFile="true"/>
+    <include file="db/007_ddl_create_posts.sql" relativeToChangelogFile="true"/>
+    <include file="db/008_dml_insert_test_data.sql" relativeToChangelogFile="true"/>
+
+</databaseChangeLog>
